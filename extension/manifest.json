@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Auto Invert Bright Images",
+  "description": "Automatically inverts eye-searing white images when browsing in dark mode.",
+  "version": "0.1.0",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
