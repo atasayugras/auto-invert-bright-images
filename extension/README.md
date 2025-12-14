@@ -97,7 +97,7 @@ The goal is eye comfort, not perfect color fidelity.
 
 Clone the repository:
 
-    git clone https://github.com/yourname/auto-invert-bright-images
+    git clone https://github.com/atasayugras/auto-invert-bright-images.git
 
 ---
 

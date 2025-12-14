@@ -152,12 +152,9 @@
      */
 
     function shouldInvert(data) {
-        let white = 0;
-        let black = 0;
-        let gray = 0;
+        let brightPixels = 0;
         let samples = 0;
 
-        // Sample every 5th pixel for performance
         for (let i = 0; i < data.length; i += 20) {
             samples++;
 
@@ -166,19 +163,14 @@
             const b = data[i + 2];
 
             const brightness = (r + g + b) / 3;
-            const saturation = Math.max(r, g, b) - Math.min(r, g, b);
 
-            if (brightness > 225) white++;
-            if (brightness < 40) black++;
-            if (saturation < 15) gray++;
+            if (brightness > 200) brightPixels++;
         }
 
-        return (
-            white / samples > 0.45 &&
-            black / samples > 0.04 &&
-            gray / samples > 0.6
-        );
+        // If most of the image is bright, invert it
+        return brightPixels / samples > 0.6;
     }
+
 
     /* ============================================================
      * Pixel inversion
@@ -213,7 +205,12 @@
      */
 
     function applyCssFallback(img) {
-        img.style.filter = "invert(1) hue-rotate(180deg)";
+        img.style.setProperty(
+            "filter",
+            "invert(1) hue-rotate(180deg) brightness(1.1) contrast(1.1)",
+            "important"
+        );
+
         img.style.backgroundColor = "black";
         log("CSS fallback applied:", img.src);
     }
