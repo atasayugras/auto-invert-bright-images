@@ -24,7 +24,7 @@ but images are usually left untouched.
 
 ## What this extension does
 
-This extension automatically detects images that are likely to be:
+It detects images that are likely to be screenshots or documentation images, based on brightness and contrast characteristics:
 - screenshots
 - terminal output
 - documentation images
@@ -38,20 +38,13 @@ Everything runs locally in your browser.
 
 ## How it works
 
-### 1. Image scanning
-All `<img>` elements on the page are scanned once.
-Each image is processed only a single time.
-
-### 2. Canvas-based analysis (preferred)
-When possible, images are drawn to an offscreen canvas.
-Pixel brightness and saturation are sampled to detect
-white-background + dark-content images.
-
-If the image matches the criteria, it is inverted pixel-by-pixel.
-
-### 3. CSS fallback (when analysis is blocked)
-Some images cannot be analyzed due to browser security rules.
-In those cases, a CSS filter is applied as a fallback.
+This extension uses a brightness-based detection strategy:
+- If an image is mostly bright (e.g., white or light background),
+  it will be inverted to reduce eye strain.
+- This is a simple heuristic: it prioritizes eye comfort over
+  perfect content classification.
+- If pixel analysis is blocked by browser security (cross-origin),
+  a CSS filter inversion fallback is applied.
 
 ---
 
@@ -72,12 +65,19 @@ In these cases:
 
 This is a browser security feature and cannot be bypassed safely.
 
+### Fallback inversion
+
+When pixel access is blocked (cross-origin images), the extension applies
+a CSS filter (`invert + hue-rotate + brightness + contrast`) to approximate
+a dark-mode version. This works in most cases, even when canvas analysis
+is unavailable.
+
 ---
 
 ### Visual accuracy
 - Canvas inversion preserves clarity and contrast
 - CSS fallback may slightly distort colors
-- Photos may look unnatural when inverted
+- Photographic images are intentionally less likely to be inverted, but false positives can occur
 
 The goal is eye comfort, not perfect color fidelity.
 
